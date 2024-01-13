@@ -4,110 +4,146 @@
 
 package frc.robot;
 
+import org.slf4j.Logger;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import riolog.PKLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
-   private static final String kDefaultAuto = "Default";
-   private static final String kCustomAuto = "My Auto";
-   private String m_autoSelected;
-   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+   /** Our classes' logger **/
+   private static final Logger logger = PKLogger.getLogger(Robot.class.getName());
 
    /**
-    * This function is run when the robot is first started up and should be used
-    * for any
-    * initialization code.
+    * Constructor for Robot.
+    *
+    * @param period Loop period in seconds.
     */
-   @Override
-   public void robotInit() {
-      m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-      m_chooser.addOption("My Auto", kCustomAuto);
-      SmartDashboard.putData("Auto choices", m_chooser);
+   public Robot(double period) {
+      super(period);
+      logger.info("constructing w/ ");
    }
 
    /**
-    * This function is called every 20 ms, no matter the mode. Use this for items
-    * like diagnostics
-    * that you want ran during disabled, autonomous, teleoperated and test.
+    * This function is run when the robot is first started up and should be used
+    * for any initialization code.
+    */
+   @Override
+   public void robotInit() {
+   }
+
+   /**
+    * This function is called every period, no matter the mode. Use this for items
+    * like diagnostics that you want ran during disabled, autonomous, teleoperated
+    * and test.
     *
     * <p>
     * This runs after the mode specific periodic functions, but before LiveWindow
-    * and
-    * SmartDashboard integrated updating.
+    * and SmartDashboard integrated updating.
     */
    @Override
    public void robotPeriodic() {
    }
 
    /**
-    * This autonomous (along with the chooser code above) shows how to select
-    * between different
-    * autonomous modes using the dashboard. The sendable chooser code works with
-    * the Java
-    * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the
-    * chooser code and
-    * uncomment the getString line to get the auto name from the text box below the
-    * Gyro
-    *
-    * <p>
-    * You can add additional auto modes by adding additional comparisons to the
-    * switch structure
-    * below with additional strings. If using the SendableChooser make sure to add
-    * them to the
-    * chooser code above as well.
+    * This function is called once when the robot is disabled.
     */
    @Override
-   public void autonomousInit() {
-      m_autoSelected = m_chooser.getSelected();
-      // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-      System.out.println("Auto selected: " + m_autoSelected);
-   }
-
-   /** This function is called periodically during autonomous. */
-   @Override
-   public void autonomousPeriodic() {
-      switch (m_autoSelected) {
-         case kCustomAuto:
-            // Put custom auto code here
-            break;
-         case kDefaultAuto:
-         default:
-            // Put default auto code here
-            break;
-      }
-   }
-
-   /** This function is called once when teleop is enabled. */
-   @Override
-   public void teleopInit() {
-   }
-
-   /** This function is called periodically during operator control. */
-   @Override
-   public void teleopPeriodic() {
-   }
-
-   /** This function is called once when the robot is disabled. */
-   @Override
    public void disabledInit() {
+      logger.info("initializing disabled");
+
+      logger.info("initialized disable");
    }
 
-   /** This function is called periodically when disabled. */
+   /**
+    * This function is called periodically whilst disabled.
+    */
    @Override
    public void disabledPeriodic() {
    }
 
-   /** This function is called once when test mode is enabled. */
+   /**
+    * This function is called once when disabled mode is exited.
+    */
+   @Override
+   public void disabledExit() {
+      logger.info("exiting disabled");
+
+      logger.info("exited disable");
+   }
+
+   /**
+    * This function is called once when autonomous mode is entered.
+    */
+   @Override
+   public void autonomousInit() {
+      logger.info("initializing autonomous");
+
+      logger.info("initialized autonomous");
+   }
+
+   /**
+    * This function is called periodically whilst in autonomous mode.
+    */
+   @Override
+   public void autonomousPeriodic() {
+   }
+
+   /**
+    * This function is called once when autonomous mode is exited.
+    */
+   @Override
+   public void autonomousExit() {
+      logger.info("exiting autonomous");
+
+      logger.info("exited autonomous");
+   }
+
+   /**
+    * This function is called once when teleop mode is entered.
+    */
+   @Override
+   public void teleopInit() {
+      logger.info("initializing teleop");
+
+      logger.info("initialized teleop");
+   }
+
+   /**
+    * This function is called periodically whilst in teleop mode (operator
+    * control).
+    */
+   @Override
+   public void teleopPeriodic() {
+   }
+
+   /**
+    * This function is called once when teleop mode is exited.
+    */
+   @Override
+   public void teleopExit() {
+      logger.info("exiting teleop");
+
+      logger.info("exited teleop");
+   }
+
+   /**
+    * This function is called once when test mode is enabled.
+    *
+    * <pre>
+    * Note:
+    *    https://www.chiefdelphi.com/t/running-a-command-in-test-mode/418286/3
+    *    https://www.chiefdelphi.com/t/can-you-run-commands-in-test-methods-of-robot-java/349402
+    * </pre>
+    */
    @Override
    public void testInit() {
    }
@@ -115,6 +151,11 @@ public class Robot extends TimedRobot {
    /** This function is called periodically during test mode. */
    @Override
    public void testPeriodic() {
+   }
+
+   /** This function is called once when test mode is exited. */
+   @Override
+   public void testExit() {
    }
 
    /** This function is called once when the robot is first started up. */
@@ -126,4 +167,5 @@ public class Robot extends TimedRobot {
    @Override
    public void simulationPeriodic() {
    }
+
 }

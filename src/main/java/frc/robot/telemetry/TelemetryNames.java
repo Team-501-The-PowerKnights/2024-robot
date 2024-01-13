@@ -8,7 +8,6 @@
 
 package frc.robot.telemetry;
 
-
 /**
  * Provides a standard way of defining names for the <i>Telemetry</i> used in
  * the program. No code should define or use a hard-coded string outside of the
@@ -29,6 +28,22 @@ public final class TelemetryNames {
       public static final String robotImpl = name + ".robotImpl";
       public static final String robotStatus = name + ".robotStatus";
       public static final String robotImplClass = name + ".robotImplClass";
+   }
+
+   /***************
+    * Managers
+    ***************/
+
+   public final class Preferences {
+      private static final String name = "Preferences";
+
+      public static final String status = name + ".status";
+   }
+
+   public final class Properties {
+      private static final String name = "Properties";
+
+      public static final String status = name + ".status";
    }
 
 }

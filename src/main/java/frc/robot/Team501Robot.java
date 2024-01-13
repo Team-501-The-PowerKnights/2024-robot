@@ -17,7 +17,6 @@ import frc.robot.telemetry.TelemetryNames;
 
 import riolog.PKLogger;
 
-
 /**
  * This class is used to provide a wrapper on the WPILib stuff, and a way to get
  * some personalization and configuration info injected into the dashboard and
@@ -31,12 +30,25 @@ public class Team501Robot extends Robot {
    private static final Logger logger = PKLogger.getLogger(Team501Robot.class.getName());
 
    public Team501Robot() {
+      super(loopPeriod);
       logger.info("constructing");
 
       SmartDashboard.putString(TelemetryNames.Misc.codeVersion, VersionInfo.version);
       logger.info("codeVersion={}", VersionInfo.version);
 
       logger.info("constructed");
+   }
+
+   private static final double loopPeriod = 0.200;
+
+   /**
+    * Returns the loop period in use. It is set at construction time, and can't be
+    * modified on the fly.
+    * 
+    * @return the loop period in seconds
+    */
+   static public double getLoopPeriod() {
+      return loopPeriod;
    }
 
 }
