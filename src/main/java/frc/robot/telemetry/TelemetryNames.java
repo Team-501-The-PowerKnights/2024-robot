@@ -8,6 +8,8 @@
 
 package frc.robot.telemetry;
 
+import frc.robot.modules.ModuleNames;
+
 /**
  * Provides a standard way of defining names for the <i>Telemetry</i> used in
  * the program. No code should define or use a hard-coded string outside of the
@@ -28,6 +30,23 @@ public final class TelemetryNames {
       public static final String robotImpl = name + ".robotImpl";
       public static final String robotStatus = name + ".robotStatus";
       public static final String robotImplClass = name + ".robotImplClass";
+
+      public static final String dsConnected = name + ".dsConnected";
+      public static final String fmsConnected = name + ".fmsConnected";
+
+      public static final String realAuto = name + ".realAuto";
+
+      public static final String initStatus = name + ".initStatus";
+
+      public static final String endGameStarted = name + ".endGameStarted";
+   }
+
+   public final class Scheduler {
+      public static final String name = "Scheduler";
+
+      public static final String status = name + ".status";
+      // The current commands running on the robot
+      public static final String currentCommands = name + ".currentCommands";
    }
 
    /***************
@@ -44,6 +63,50 @@ public final class TelemetryNames {
       private static final String name = "Properties";
 
       public static final String status = name + ".status";
+   }
+
+   public final class Telemetry {
+      public static final String name = "Telemetry";
+
+      public static final String status = name + ".status";
+   }
+
+   /***************
+    * Modules
+    ***************/
+
+   public final class LED {
+      private static final String name = ModuleNames.ledName;
+
+      public static final String status = name + ".status";
+      public static final String implClass = name + ".implClass";
+      public static final String defCommand = name + "defCommand";
+
+      public static final String enabled = name + ".enabled";
+      public static final String color = name + ".color";
+   }
+
+   public final class Pneumatic {
+      private static final String name = ModuleNames.pneumaticName;
+
+      public static final String status = name + ".status";
+      public static final String implClass = name + ".implClass";
+      public static final String defCommand = name + "defCommand";
+
+      public static final String enabled = name + ".enabled";
+      public static final String pressureGood = name + ".pressureGood";
+   }
+
+   public final class Power {
+      private static final String name = ModuleNames.powerName;
+
+      public static final String status = name + ".status";
+      public static final String implClass = name + ".implClass";
+      public static final String defCommand = name + "defCommand";
+
+      public static final String busVoltage = name + ".busVoltage";
+      public static final String totalCurrent = name + ".totalCurrent";
+      public static final String totalEnergy = name + ".totalEnergy";
    }
 
 }
