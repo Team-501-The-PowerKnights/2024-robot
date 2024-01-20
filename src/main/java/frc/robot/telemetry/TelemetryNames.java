@@ -9,6 +9,7 @@
 package frc.robot.telemetry;
 
 import frc.robot.modules.ModuleNames;
+import frc.robot.sensors.SensorNames;
 
 /**
  * Provides a standard way of defining names for the <i>Telemetry</i> used in
@@ -107,6 +108,23 @@ public final class TelemetryNames {
       public static final String busVoltage = name + ".busVoltage";
       public static final String totalCurrent = name + ".totalCurrent";
       public static final String totalEnergy = name + ".totalEnergy";
+   }
+
+   /***************
+    * Sensors
+    ***************/
+
+   public final class Gyro {
+      private static final String name = SensorNames.gyroName;
+
+      public static final String status = name + ".status";
+      public static final String implClass = name + ".implClass";
+
+      public static final String roll = name + ".roll";
+      public static final String pitch = name + ".pitch";
+      public static final String yaw = name + ".yaw";
+      public static final String angle = name + ".angle";
+      public static final String heading = name + ".heading";
    }
 
 }
