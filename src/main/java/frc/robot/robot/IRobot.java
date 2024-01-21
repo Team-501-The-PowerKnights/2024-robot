@@ -24,53 +24,25 @@ public interface IRobot {
 
    // Robot Common Subsystems
 
-   public default boolean hasGripper() {
-      return false;
-   };
-
    // Proto-Bot Unique Subsystems
-
-   public default boolean hasArmRotator() {
-      return false;
-   };
-
-   public default boolean hasArmExtener() {
-      return false;
-   };
-
-   public default boolean hasWrist() {
-      return false;
-   };
-
-   public default boolean hasIngester() {
-      return false;
-   };
 
    // Real-Bot Unique Subsystems
 
-   public default boolean hasTurret() {
-      return false;
-   };
+   // Example Subsystems
 
-   public default boolean hasLift() {
+   public default boolean hasExample() {
       return false;
-   };
-
-   public default boolean hasArm() {
-      return false;
-   };
+   }
 
    /**
     * Use this method to define your trigger->command mappings. Triggers can be
     * created via the {@link Trigger#Trigger(java.util.function.BooleanSupplier)}
     * constructor with an arbitrary predicate, or via the named factories in
     * {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses
-    * for
-    * {@link CommandXboxController
+    * for {@link CommandXboxController
     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
-    * controllers or
-    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-    * joysticks}.
+    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick
+    * Flight joysticks}.
     */
    public void configureBindings();
 

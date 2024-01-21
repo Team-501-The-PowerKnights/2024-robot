@@ -10,6 +10,7 @@ package frc.robot.telemetry;
 
 import frc.robot.modules.ModuleNames;
 import frc.robot.sensors.SensorNames;
+import frc.robot.subsystems.SubsystemNames;
 
 /**
  * Provides a standard way of defining names for the <i>Telemetry</i> used in
@@ -125,6 +126,19 @@ public final class TelemetryNames {
       public static final String yaw = name + ".yaw";
       public static final String angle = name + ".angle";
       public static final String heading = name + ".heading";
+   }
+
+   /***************
+    * Subsystems
+    ***************/
+
+   public final class Example {
+      private static final String name = SubsystemNames.exampleName;
+
+      public static final String status = name + ".status";
+      public static final String implClass = name + ".implClass";
+      public static final String autoCommand = name + ".autoCommand";
+      public static final String teleCommand = name + ".teleCommand";
    }
 
 }

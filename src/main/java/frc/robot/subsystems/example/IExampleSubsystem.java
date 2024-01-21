@@ -6,19 +6,25 @@
 /*- of this project.                                                      */
 /*------------------------------------------------------------------------*/
 
-package frc.robot.telemetry;
+package frc.robot.subsystems.example;
+
+import frc.robot.subsystems.ISubsystem;
 
 /**
- * DOCS Add your docs here.
+ * DOCS: Add your docs here.
  */
-public interface ITelemetryProvider {
-
-   public void updateTelemetry();
+public interface IExampleSubsystem extends ISubsystem {
 
    /**
-    * TODO: Remove default and/or implement method
+    * Stop the subsystem from any motion it may have been running under.
     */
-   public default void logTelemetry() {
-   };
+   public void stop();
+
+   /**
+    * Move the subsystem under 'manual' control.
+    *
+    * @param speed speed to move at ("-" is down, "+" is up)
+    */
+   public void move(double speed);
 
 }

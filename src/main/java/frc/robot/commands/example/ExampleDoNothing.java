@@ -6,19 +6,24 @@
 /*- of this project.                                                      */
 /*------------------------------------------------------------------------*/
 
-package frc.robot.telemetry;
+package frc.robot.commands.example;
+
+import org.slf4j.Logger;
+
+import riolog.PKLogger;
 
 /**
- * DOCS Add your docs here.
+ * DOCS: Add your docs here.
  */
-public interface ITelemetryProvider {
+public class ExampleDoNothing extends ExampleCommandBase {
 
-   public void updateTelemetry();
+   /** Our classes' logger **/
+   private static final Logger logger = PKLogger.getLogger(ExampleDoNothing.class.getName());
 
-   /**
-    * TODO: Remove default and/or implement method
-    */
-   public default void logTelemetry() {
-   };
+   public ExampleDoNothing() {
+      logger.info("constructing {}", getName());
+
+      logger.info("constructed");
+   }
 
 }
