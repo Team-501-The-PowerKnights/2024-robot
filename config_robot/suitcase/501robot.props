@@ -60,6 +60,15 @@ Gyro.className = StubGyroSensor
 #########################################
 
 #####################
+# Example
+#####################
+Example.className = StubExampleSubsystem
+#Example.className = SuitcaseExampleSubsystem
+Example.autoCommandName = ExampleDoNothing
+Example.teleCommandName = ExampleDoNothing
+
+
+#####################
 # Drive
 #####################
 Drive.className = StubDriveSubsystem

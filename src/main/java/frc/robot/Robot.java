@@ -6,8 +6,12 @@ package frc.robot;
 
 import org.slf4j.Logger;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.telemetry.TelemetryNames;
 
+import riolog.Level;
 import riolog.PKLogger;
 
 /**
@@ -22,6 +26,21 @@ public class Robot extends TimedRobot {
    /** Our classes' logger **/
    private static final Logger logger = PKLogger.getLogger(Robot.class.getName());
 
+   // Flag for started/running autonomous part of match
+   @SuppressWarnings("unused")
+   private boolean autonomousRunning;
+   // Flag for having run first autonomous loop
+   private boolean autonomousFirstRun;
+   // Flag for having completed autonomous part of match
+   private static boolean autonomousComplete;
+
+   // Flag for having started/running teleop part of match
+   private boolean teleopRunning;
+   // Flag for having run first teleop loop
+   private boolean teleopFirstRun;
+   // Flag for having completed teleop part of match
+   private static boolean teleopComplete;
+
    /**
     * Constructor for Robot.
     *
@@ -30,6 +49,8 @@ public class Robot extends TimedRobot {
    public Robot(double period) {
       super(period);
       logger.info("constructing w/ ");
+
+      PKLogger.setLevel(Level.DEBUG);
    }
 
    /**
@@ -38,6 +59,22 @@ public class Robot extends TimedRobot {
     */
    @Override
    public void robotInit() {
+      logger.info("initializing");
+
+      // Initialize state variables
+      autonomousRunning = false;
+      autonomousFirstRun = false;
+      autonomousComplete = false;
+      teleopRunning = false;
+      teleopFirstRun = false;
+      teleopComplete = false;
+
+      // Set up end game determiner
+      endGameStarted = false;
+      SmartDashboard.putBoolean(TelemetryNames.Misc.endGameStarted, endGameStarted);
+      addPeriodic(endGameDeterminer, 2.0);
+
+      logger.info("initialized");
    }
 
    /**
@@ -166,6 +203,39 @@ public class Robot extends TimedRobot {
    /** This function is called periodically whilst in simulation. */
    @Override
    public void simulationPeriodic() {
+   }
+
+   // Flag for in end game of match
+   private static boolean endGameStarted;
+   // Periodic runnable to do the determining off main loop
+   private Runnable endGameDeterminer = new Runnable() {
+
+      @Override
+      public void run() {
+         // Have to have field connected, otherwise remaining seconds counts up
+         // Have to be running teleop
+         // Have to not have triggered the end game start yet
+         if (Team501Robot.isFieldConnected() && teleopRunning && !endGameStarted) {
+            double remainingSeconds = DriverStation.getMatchTime();
+            if (remainingSeconds <= 30) {
+               endGameStarted = true;
+               SmartDashboard.putBoolean(TelemetryNames.Misc.endGameStarted, endGameStarted);
+            }
+         }
+      }
+
+   };
+
+   // TODO: Comment
+   // TODO: Move to 501 Robot?
+   static public boolean isEndGameStarted() {
+      return endGameStarted;
+   }
+
+   // TODO: Comment
+   // TODO: Move to 501 Robot?
+   static public boolean isMatchComplete() {
+      return (autonomousComplete && teleopComplete);
    }
 
 }
