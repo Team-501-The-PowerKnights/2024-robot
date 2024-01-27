@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.config.VersionInfo;
 import frc.robot.modules.led.LEDModuleFactory;
 import frc.robot.telemetry.TelemetryManager;
 import frc.robot.telemetry.TelemetryNames;
 import frc.robot.utils.PKColor8Bit;
+
 import riolog.Level;
 import riolog.PKLogger;
 import riolog.ProblemTracker;
@@ -28,6 +30,9 @@ import riolog.ProblemTracker;
  * This class is used to provide a wrapper on the WPILib stuff, and a way to get
  * some personalization and configuration info injected into the dashboard and
  * log files.
+ * <p>
+ * Because we are extending the {@link Robot} class, the
+ * <code>build.gradle</code> file in the project references this one instead.
  */
 public class Team501Robot extends Robot {
 
@@ -36,6 +41,13 @@ public class Team501Robot extends Robot {
 
    private RobotContainer robotContainer;
 
+   private Command autonomousCommand;
+
+   /**
+    * Constructor for Robot.
+    *
+    * @param period Loop period in seconds.
+    */
    public Team501Robot() {
       super(loopPeriod);
       logger.info("constructing");
@@ -52,6 +64,10 @@ public class Team501Robot extends Robot {
       logger.info("constructed");
    }
 
+   /**
+    * This function is run when the robot is first started up and should be used
+    * for any initialization code.
+    */
    @Override
    public void robotInit() {
       logger.info("initializing");
@@ -78,6 +94,7 @@ public class Team501Robot extends Robot {
       // Put indication of initialization status on dash
       determineInitStatus();
 
+      // Init the superclass (only states & modes content)
       super.robotInit();
    }
 
@@ -193,6 +210,141 @@ public class Team501Robot extends Robot {
       loggerLevelChooser.addOption("TRACE", Level.TRACE);
 
       SmartDashboard.putData("Logger Level", loggerLevelChooser);
+   }
+
+   /**
+    * This function is called periodically whilst disabled.
+    */
+   @Override
+   public void disabledPeriodic() {
+      Level level = loggerLevelChooser.getSelected();
+      PKLogger.setLevel(level);
+
+      // Has a "real" auto been selected yet?
+      boolean realAutoSelected = robotContainer.isRealAutoSelected();
+      SmartDashboard.putBoolean(TelemetryNames.Misc.realAuto, realAutoSelected);
+
+      displayAutoSelectionStatus(realAutoSelected);
+
+      super.disabledPeriodic();
+   }
+
+   private long autoModeCheckDelay = (long) (20.0 / getPeriod());
+   private long autoErrorOnPeriod = (long) (1.5 / getPeriod());
+   private long autoErrorOffPeriod = (long) (0.75 / getPeriod());
+   private long autoErrorCount;
+   private boolean autoErrorOn = true;
+
+   /**
+    * Displays a flashing red in the LEDs if a real auto hasn't been selected.
+    * Waits a bit for transitioning from green though (so can see the state of
+    * start-up).
+    *
+    * @param realAutoSelected
+    */
+   private void displayAutoSelectionStatus(boolean realAutoSelected) {
+      if (autoModeCheckEnabled && !robotContainer.isRealAutoSelected()) {
+         if (autoModeCheckDelay > 0) {
+            --autoModeCheckDelay;
+         } else if (!realAutoSelected) {
+            if (--autoErrorCount <= 0) {
+               if (autoErrorOn) {
+                  LEDModuleFactory.getInstance().setColor(PKColor8Bit.blackRGB);
+                  autoErrorCount = autoErrorOffPeriod;
+               } else {
+                  LEDModuleFactory.getInstance().setColor(PKColor8Bit.redRGB);
+                  autoErrorCount = autoErrorOnPeriod;
+               }
+               autoErrorOn = !autoErrorOn;
+            }
+         }
+      } else {
+         autoModeCheckEnabled = false;
+         LEDModuleFactory.getInstance().setColor(PKColor8Bit.greenRGB);
+      }
+   }
+
+   /**
+    * This function is called once each time the robot exits Disabled mode.
+    */
+   @Override
+   public void disabledExit() {
+      logger.info("exiting disabled");
+
+      ModeFollowers.getInstance().exitDisabled();
+
+      super.disabledExit();
+
+      logger.info("exited disable");
+   }
+
+   /**
+    * This function is called once when autonomous mode is entered.
+    */
+   @Override
+   public void autonomousInit() {
+      logger.info("initializing autonomous");
+
+      ModeFollowers.getInstance().initAutonomous();
+
+      // schedule the autonomous command (example)
+      autonomousCommand = robotContainer.getAutonomousCommand();
+      if (autonomousCommand != null) {
+         autonomousCommand.schedule();
+      }
+
+      super.autonomousInit();
+
+      logger.info("initialized autonomous");
+   }
+
+   /**
+    * This function is called once when autonomous mode is exited.
+    */
+   @Override
+   public void autonomousExit() {
+      logger.info("exiting autonomous");
+
+      ModeFollowers.getInstance().exitAutonomous();
+
+      super.autonomousExit();
+
+      logger.info("exited autonomous");
+   }
+
+   /**
+    * This function is called once when teleop mode is entered.
+    */
+   @Override
+   public void teleopInit() {
+      logger.info("initializing teleop");
+
+      // FIXME: Should be / is already elsewhere?
+      // This makes sure that the autonomous stops running when teleop starts
+      // running.
+      if (autonomousCommand != null) {
+         autonomousCommand.cancel();
+      }
+
+      ModeFollowers.getInstance().initTeleop();
+
+      super.teleopInit();
+
+      logger.info("initialized teleop");
+   }
+
+   /**
+    * This function is called once when teleop mode is exited.
+    */
+   @Override
+   public void teleopExit() {
+      logger.info("exiting teleop");
+
+      ModeFollowers.getInstance().exitTeleop();
+
+      super.teleopExit();
+
+      logger.info("exited teleop");
    }
 
 }

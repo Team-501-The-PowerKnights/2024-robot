@@ -11,6 +11,7 @@ package frc.robot.robot;
 import org.slf4j.Logger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.commands.AutoDoNothing;
@@ -69,6 +70,8 @@ class SuitcaseRobot extends BaseRobot {
 
       // Default option is safety of "do nothing"
       autoChooser.setDefaultOption("Do Nothing", AutoSelection.doNothing);
+
+      SmartDashboard.putData("Auto Chooser", autoChooser);
 
       logger.info("created");
    }
