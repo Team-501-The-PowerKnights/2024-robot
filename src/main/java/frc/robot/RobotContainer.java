@@ -116,17 +116,17 @@ public class RobotContainer {
     logger.info("Created robot container");
   }
 
-  private void intializePreferences() {
-    // Reads and initializes all subsystems preferences
-    PreferencesManager.constructInstance();
-  }
-
   private void initializeProperties() {
     // Reads and stores all the properties
     PropertiesManager.constructInstance();
 
     logger.info("Properties as initialized:");
     PropertiesManager.getInstance().logProperties(logger);
+  }
+
+  private void intializePreferences() {
+    // Reads and initializes all preferences
+    PreferencesManager.constructInstance();
   }
 
   public boolean isRealAutoSelected() {

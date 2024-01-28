@@ -83,7 +83,7 @@ public class PropertiesManager {
       else if (robotName.isEmpty() || robotImpl.isEmpty()) {
          logger.warn("Properties file {} exists but missing key info", fileName);
          ProblemTracker.addWarning();
-         SmartDashboard.putNumber(TelemetryNames.Properties.status, PKStatus.unknown.tlmValue);
+         SmartDashboard.putNumber(TelemetryNames.Properties.status, PKStatus.degraded.tlmValue);
       } else {
          SmartDashboard.putNumber(TelemetryNames.Properties.status, PKStatus.success.tlmValue);
       }
@@ -111,7 +111,7 @@ public class PropertiesManager {
          // Use Properties class for conviencence to read & parse file
          Properties props = new Properties();
          props.load(reader);
-         /* logger.trace("properties as read: {}", props); */
+         logger.trace("properties as read: {}", props);
 
          Map<String, String> rawProperties = props.entrySet().stream()
                .collect(Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString()));
@@ -139,10 +139,8 @@ public class PropertiesManager {
 
    /**
     * 
-    * @param arg0
-    *           - key of set
-    * @param arg1
-    *           - value of set (don't care but need for method)
+    * @param arg0 - key of set
+    * @param arg1 - value of set (don't care but need for method)
     */
    private void sort(Object arg0, Object arg1) {
       // Cast arguments into strings

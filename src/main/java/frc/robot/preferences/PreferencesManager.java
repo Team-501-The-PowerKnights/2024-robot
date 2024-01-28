@@ -35,7 +35,7 @@ public final class PreferencesManager {
    private static String myName = "Prefs";
 
    public static void constructInstance() {
-      SmartDashboard.putNumber(TelemetryNames.Properties.status, PKStatus.unknown.tlmValue);
+      SmartDashboard.putNumber(TelemetryNames.Preferences.status, PKStatus.unknown.tlmValue);
 
       if (ourInstance != null) {
          throw new IllegalStateException(myName + " already constructed");
